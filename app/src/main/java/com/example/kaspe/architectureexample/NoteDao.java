@@ -9,11 +9,19 @@ import java.util.List;
 public class NoteDao {
 
     private MutableLiveData<List<Note>> allNotes;
+    private static NoteDao instance;
 
-    public NoteDao() {
+    private NoteDao() {
         allNotes = new MutableLiveData<>();
         List<Note> newList = new ArrayList<>();
         allNotes.setValue(newList);
+    }
+
+    public static NoteDao getInstance(){
+        if(instance == null) {
+            instance = new NoteDao();
+        }
+        return instance;
     }
 
     public LiveData<List<Note>> getAllNotes() {

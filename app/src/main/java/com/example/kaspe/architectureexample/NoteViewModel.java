@@ -9,14 +9,14 @@ public class NoteViewModel extends ViewModel {
     private NoteRepository repository;
 
     public NoteViewModel() {
-        repository = new NoteRepository();
+        repository = NoteRepository.getInstance();
     }
 
     public LiveData<List<Note>> getAllNotes() {
         return repository.getAllNotes();
     }
 
-    public void insert(Note note) {
+    public void insert(final Note note) {
         repository.insert(note);
     }
 

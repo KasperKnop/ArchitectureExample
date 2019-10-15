@@ -4,10 +4,19 @@ import java.util.List;
 import androidx.lifecycle.LiveData;
 
 public class NoteRepository {
-    private NoteDao noteDao;
 
-    public NoteRepository(){
-        noteDao = new NoteDao();
+    private NoteDao noteDao;
+    private static NoteRepository instance;
+
+    private NoteRepository(){
+        noteDao = NoteDao.getInstance();
+    }
+
+    public static NoteRepository getInstance(){
+        if(instance == null)
+            instance = new NoteRepository();
+
+        return instance;
     }
 
     public LiveData<List<Note>> getAllNotes(){
