@@ -32,6 +32,13 @@
         android:text="Delete All"
         android:onClick="deleteAllNotes"/>
 
+    <Button
+        android:id="@+id/addNoteFromWeb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Note From Web"
+        android:onClick="addNoteFromWeb"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,5 +47,11 @@
         android:layout_gravity="center"
         android:id="@+id/textView"
         android:gravity="center"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

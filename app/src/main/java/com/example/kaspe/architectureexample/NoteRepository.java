@@ -6,10 +6,12 @@ import androidx.lifecycle.LiveData;
 public class NoteRepository {
 
     private NoteDao noteDao;
+    private NoteWebClient noteWebClient;
     private static NoteRepository instance;
 
     private NoteRepository(){
         noteDao = NoteDao.getInstance();
+        noteWebClient = NoteWebClient.getInstance();
     }
 
     public static NoteRepository getInstance(){
@@ -29,5 +31,9 @@ public class NoteRepository {
 
     public void deleteAllNotes(){
         noteDao.deleteAllNotes();
+    }
+
+    public void addNoteFromWeb(OnWebNoteReceivedListener listener) {
+        noteWebClient.getNote(listener);
     }
 }

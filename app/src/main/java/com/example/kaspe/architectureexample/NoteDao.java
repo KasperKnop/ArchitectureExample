@@ -31,7 +31,7 @@ public class NoteDao {
     public void insert(Note note) {
         List<Note> currentNotes = allNotes.getValue();
         currentNotes.add(note);
-        allNotes.setValue(currentNotes);
+        allNotes.postValue(currentNotes);
     }
 
     public void deleteAllNotes() {
