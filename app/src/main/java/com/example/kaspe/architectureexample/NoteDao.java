@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.List;
 
+//Database placeholder - Next class we will learn how to implement persistence using the Room library.
 public class NoteDao {
 
     private MutableLiveData<List<Note>> allNotes;
