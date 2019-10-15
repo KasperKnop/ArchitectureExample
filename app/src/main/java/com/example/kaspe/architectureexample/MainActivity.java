@@ -1,6 +1,5 @@
 package com.example.kaspe.architectureexample;
 
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void saveNote(View v) {
-        noteViewModel.insert(new Note(editText.getText().toString(), "description", 1));
+        noteViewModel.insert(new Note(editText.getText().toString()));
     }
 
     public void deleteAllNotes(View v) {

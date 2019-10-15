@@ -1,29 +1,32 @@
 package com.example.kaspe.architectureexample;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import java.util.ArrayList;
 import java.util.List;
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.Update;
+public class NoteDao {
 
-@Dao
-public interface NoteDao {
+    private MutableLiveData<List<Note>> allNotes;
 
-    @Insert
-    void insert(Note note);
+    public NoteDao() {
+        allNotes = new MutableLiveData<>();
+        List<Note> newList = new ArrayList<>();
+        allNotes.setValue(newList);
+    }
 
-    @Update
-    void update(Note note);
+    public LiveData<List<Note>> getAllNotes() {
+        return allNotes;
+    }
 
-    @Delete
-    void delete(Note note);
+    public void insert(Note note) {
+        List<Note> currentNotes = allNotes.getValue();
+        currentNotes.add(note);
+        allNotes.setValue(currentNotes);
+    }
 
-    @Query("DELETE FROM note_table")
-    void deleteAllNotes();
-
-    @Query("SELECT * FROM note_table ORDER BY priority DESC")
-    LiveData<List<Note>> getAllNotes();
+    public void deleteAllNotes() {
+        List<Note> newList = new ArrayList<>();
+        allNotes.setValue(newList);
+    }
 }
