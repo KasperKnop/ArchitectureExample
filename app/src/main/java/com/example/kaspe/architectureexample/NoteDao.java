@@ -1,41 +1,30 @@
 package com.example.kaspe.architectureexample;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import java.util.ArrayList;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
+
 import java.util.List;
 
-//Database placeholder - Next class we will learn how to implement persistence using the Room library.
-public class NoteDao {
+@Dao
+public interface NoteDao {
 
-    private MutableLiveData<List<Note>> allNotes;
-    private static NoteDao instance;
+    @Insert
+    void insert(Note note);
 
-    private NoteDao() {
-        allNotes = new MutableLiveData<>();
-        List<Note> newList = new ArrayList<>();
-        allNotes.setValue(newList);
-    }
+    @Update
+    void update(Note note);
 
-    public static NoteDao getInstance(){
-        if(instance == null) {
-            instance = new NoteDao();
-        }
-        return instance;
-    }
+    @Delete
+    void delete(Note note);
 
-    public LiveData<List<Note>> getAllNotes() {
-        return allNotes;
-    }
+    @Query("DELETE FROM note_table")
+    void deleteAllNotes();
 
-    public void insert(Note note) {
-        List<Note> currentNotes = allNotes.getValue();
-        currentNotes.add(note);
-        allNotes.setValue(currentNotes);
-    }
+    @Query("SELECT * FROM note_table ORDER BY priority DESC")
+    LiveData<List<Note>> getAllNotes();
 
-    public void deleteAllNotes() {
-        List<Note> newList = new ArrayList<>();
-        allNotes.setValue(newList);
-    }
 }

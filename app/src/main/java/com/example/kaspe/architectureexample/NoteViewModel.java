@@ -1,15 +1,19 @@
 package com.example.kaspe.architectureexample;
 
-import java.util.List;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
 
-public class NoteViewModel extends ViewModel {
+import java.util.List;
+
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
+public class NoteViewModel extends AndroidViewModel {
 
     private NoteRepository repository;
 
-    public NoteViewModel() {
-        repository = NoteRepository.getInstance();
+    public NoteViewModel(Application app) {
+        super(app);
+        repository = NoteRepository.getInstance(app);
     }
 
     public LiveData<List<Note>> getAllNotes() {

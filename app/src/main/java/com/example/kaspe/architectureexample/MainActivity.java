@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void saveNote(View v) {
-        noteViewModel.insert(new Note(editText.getText().toString()));
+        noteViewModel.insert(new Note(editText.getText().toString(),"description",1));
     }
 
     public void deleteAllNotes(View v) {
