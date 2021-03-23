@@ -1,68 +1,51 @@
 package com.example.kaspe.architectureexample;
 
 import android.app.Application;
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
+
+import androidx.core.os.HandlerCompat;
+import androidx.lifecycle.LiveData;
 
 import java.util.List;
-import androidx.lifecycle.LiveData;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class NoteRepository {
 
-    private NoteDao noteDao;
     private static NoteRepository instance;
-    private LiveData<List<Note>> allNotes;
+    private final NoteDao noteDao;
+    private final LiveData<List<Note>> allNotes;
+    ExecutorService executorService;
+    Handler mainThreadHandler;
 
-    private NoteRepository(Application application){
+    private NoteRepository(Application application) {
         NoteDatabase database = NoteDatabase.getInstance(application);
         noteDao = database.noteDao();
         allNotes = noteDao.getAllNotes();
+        executorService = Executors.newFixedThreadPool(2);
+        mainThreadHandler = HandlerCompat.createAsync(Looper.getMainLooper());
     }
 
-    public static synchronized NoteRepository getInstance(Application application){
-        if(instance == null)
+    public static synchronized NoteRepository getInstance(Application application) {
+        if (instance == null)
             instance = new NoteRepository(application);
 
         return instance;
     }
 
-    public LiveData<List<Note>> getAllNotes(){
+    public LiveData<List<Note>> getAllNotes() {
         return allNotes;
     }
 
     public void insert(Note note) {
-        new InsertNoteAsync(noteDao).execute(note);
+        executorService.execute(() -> {
+            noteDao.insert(note);
+            mainThreadHandler.post(() -> {/*You can execute code on the main thread in here*/});
+        });
     }
 
-    public void deleteAllNotes(){
-        new DeleteAllNotesAsync(noteDao).execute();
-    }
-
-
-    private static class InsertNoteAsync extends AsyncTask<Note,Void,Void> {
-        private NoteDao noteDao;
-
-        private InsertNoteAsync(NoteDao noteDao) {
-            this.noteDao = noteDao;
-        }
-
-        @Override
-        protected Void doInBackground(Note... notes) {
-            noteDao.insert(notes[0]);
-            return null;
-        }
-    }
-
-    private static class DeleteAllNotesAsync extends AsyncTask<Void,Void,Void> {
-        private NoteDao noteDao;
-
-        private DeleteAllNotesAsync(NoteDao noteDao) {
-            this.noteDao = noteDao;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            noteDao.deleteAllNotes();
-            return null;
-        }
+    public void deleteAllNotes() {
+        executorService.execute(noteDao::deleteAllNotes);
     }
 }

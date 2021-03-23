@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData;
 
 public class NoteViewModel extends AndroidViewModel {
 
-    private NoteRepository repository;
+    private final NoteRepository repository;
 
     public NoteViewModel(Application app) {
         super(app);

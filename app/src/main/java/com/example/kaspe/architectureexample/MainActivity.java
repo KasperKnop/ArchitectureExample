@@ -24,17 +24,14 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.textView);
 
         noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
-        noteViewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
-            @Override
-            public void onChanged(List<Note> notes) {
-                if (!notes.isEmpty()) {
-                    textView.setText("");
-                    for (Note n : notes) {
-                        textView.append(n.getTitle() + "\n");
-                    }
-                } else {
-                    textView.setText("Empty");
+        noteViewModel.getAllNotes().observe(this, notes -> {
+            if (!notes.isEmpty()) {
+                textView.setText("");
+                for (Note n : notes) {
+                    textView.append(n.getTitle() + "\n");
                 }
+            } else {
+                textView.setText("Empty");
             }
         });
     }
