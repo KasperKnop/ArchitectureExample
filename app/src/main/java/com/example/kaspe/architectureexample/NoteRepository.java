@@ -12,19 +12,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class NoteRepository {
-
     private static NoteRepository instance;
     private final NoteDao noteDao;
     private final LiveData<List<Note>> allNotes;
-    ExecutorService executorService;
-    Handler mainThreadHandler;
+    private final ExecutorService executorService;
 
     private NoteRepository(Application application) {
         NoteDatabase database = NoteDatabase.getInstance(application);
         noteDao = database.noteDao();
         allNotes = noteDao.getAllNotes();
         executorService = Executors.newFixedThreadPool(2);
-        mainThreadHandler = HandlerCompat.createAsync(Looper.getMainLooper());
     }
 
     public static synchronized NoteRepository getInstance(Application application) {
@@ -39,10 +36,7 @@ public class NoteRepository {
     }
 
     public void insert(Note note) {
-        executorService.execute(() -> {
-            noteDao.insert(note);
-            mainThreadHandler.post(() -> {/*You can execute code on the main thread in here*/});
-        });
+        executorService.execute(() -> noteDao.insert(note));
     }
 
     public void deleteAllNotes() {

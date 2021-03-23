@@ -6,10 +6,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private NoteViewModel noteViewModel;

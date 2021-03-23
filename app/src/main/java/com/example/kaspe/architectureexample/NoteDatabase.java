@@ -1,5 +1,6 @@
 package com.example.kaspe.architectureexample;
 
+import android.app.Application;
 import android.content.Context;
 
 import androidx.room.Database;
@@ -15,7 +16,7 @@ public abstract class NoteDatabase extends RoomDatabase {
 
     public static synchronized NoteDatabase getInstance(Context context){
         if(instance == null) {
-            instance = Room.databaseBuilder(context.getApplicationContext(),
+            instance = Room.databaseBuilder(context,
                     NoteDatabase.class, "note_database")
                     .fallbackToDestructiveMigration()
                     .build();
